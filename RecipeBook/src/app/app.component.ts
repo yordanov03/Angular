@@ -6,4 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  recipeClicked:boolean = false;
+
+
+  onPropertyClicked(property: string){
+    property=='recipe'? this.recipeClicked= true : this.recipeClicked = false;
+  }
 }
