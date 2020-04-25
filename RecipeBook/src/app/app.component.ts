@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  recipeClicked:boolean = false;
+  recipeClicked:boolean = true;
 
 
   onPropertyClicked(property: string){
