@@ -14,6 +14,33 @@
 
           Upon submitting the form, simply print the value to the console
       -->
+
+      <form [formGroup]='singupForm' (ngSubmit)='onSubmit()'>
+        <div class="form-group">
+          <label for='projectName'>Project Name</label>
+          <input type="text" id='projectName' class="form-control" formControlName='projectName'>
+            <span *ngIf="singupForm.get('projectName').touched && !singupForm.get('projectName').valid" class="help-block">Data is not valid</span>
+        </div>
+
+        <div class="form-group">
+          <label for='email'>Email</label>
+          <input type="text" id='email' class="form-control" formControlName='email'>
+        </div>
+
+        <div class="form-group">
+          <label for='status'>Status</label>
+          <select id="status" formControlName='status' class="form-control">
+            <option value="stable">Stable</option>
+            <option value="critical">Critical</option>
+            <option value="finished">Finished</option>
+          </select>
+        </div>
+
+        <div>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+
+      </form>
     </div>
   </div>
 </div>
