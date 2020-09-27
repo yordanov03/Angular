@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onFetch(){
-    this.dataStorageService.fetchRecipes()
+    this.dataStorageService.fetchRecipes().subscribe();
   }
   ngOnDestroy(){
     this.userSub.unsubscribe();
