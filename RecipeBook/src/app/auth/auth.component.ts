@@ -22,36 +22,38 @@ export class AuthComponent implements OnInit {
 
   onSwitchMode(){
     this.isInLoginMode = !this.isInLoginMode
-    console.log(this.isInLoginMode)
   }
 
-  onSubmit(form: NgForm){
-    if(!form.valid){
-        return;
+  onSubmit(form: NgForm) {
+    if (!form.valid) {
+      return;
     }
+    const email = form.value.email;
+    const password = form.value.password;
+
+    let authObs: Observable<AuthResponseData>;
 
     this.isLoading = true;
 
-    const email = form.value.email;
-    const password = form.value.password;
-    let authObs: Observable<AuthResponseData>;
-
-    if(this.isInLoginMode){
-      authObs = this.authService.login(email, password)
-    }
-
-    else{
+    if (this.isInLoginMode) {
+      authObs = this.authService.login(email, password);
+    } else {
       authObs = this.authService.signup(email, password);
     }
 
-    authObs.subscribe(resData=>{
-      console.log(resData)
-      this.isLoading = false;
-      this.router.navigate(['/recipes'])
-    }, errorMessage=>{console.log(errorMessage);
-      this.error = errorMessage
-      this.isLoading = false})
+    authObs.subscribe(
+      resData => {
+        console.log(resData);
+        this.isLoading = false;
+        this.router.navigate(['/recipes']);
+      },
+      errorMessage => {
+        console.log(errorMessage);
+        this.error = errorMessage;
+        this.isLoading = false;
+      }
+    );
 
     form.reset();
-}
+  }
 }
