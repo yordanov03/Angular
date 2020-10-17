@@ -1,57 +1,61 @@
-import { Recipe } from "./recipe.model";
-import { Injectable } from "@angular/core";
-import { Ingredient } from "../shared/ingredient.model";
-import { ShoppingListService } from "../shopping-list/shopping-list.service";
-import { Subject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+
+import { Recipe } from './recipe.model';
+import { Ingredient } from '../shared/ingredient.model';
+import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable()
-export class RecipeService{
+export class RecipeService {
+  recipesChanged = new Subject<Recipe[]>();
 
-recipesChanged= new Subject<Recipe[]>();
+  // private recipes: Recipe[] = [
+  //   new Recipe(
+  //     'Tasty Schnitzel',
+  //     'A super-tasty Schnitzel - just awesome!',
+  //     'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
+  //     [new Ingredient('Meat', 1), new Ingredient('French Fries', 20)]
+  //   ),
+  //   new Recipe(
+  //     'Big Fat Burger',
+  //     'What else you need to say?',
+  //     'https://upload.wikimedia.org/wikipedia/commons/b/be/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg',
+  //     [new Ingredient('Buns', 2), new Ingredient('Meat', 1)]
+  //   )
+  // ];
+  private recipes: Recipe[] = [];
 
-    // private recipes: Recipe[] = [ 
-    //     new Recipe('A test recipe',
-    //     'This is simply a test', 
-    //     'https://img.hellofresh.com/f_auto,fl_lossy,q_auto,w_610/hellofresh_s3/image/mediterranean-hummus-couscous-bowls-9aa1b9c2.jpg',
-    //     [new Ingredient('Meat', 1), new Ingredient('Herbs', 5)]),
-    //     new Recipe ('Another test recipe', 
-    //     'This is again only a test', 
-    //     'https://img.hellofresh.com/f_auto,fl_lossy,q_auto,w_610/hellofresh_s3/image/sizzlin-saigon-steak-bowls-55aa81ad.jpg',
-    //     [new Ingredient('Eggs', 5), new Ingredient('Mushrooms',10)])];
+  constructor(private slService: ShoppingListService) {}
 
-private recipes: Recipe[] = [];
-
-constructor(private shoppingListService: ShoppingListService){}
-
-setRecipes(recipes: Recipe[]) {
+  setRecipes(recipes: Recipe[]) {
     this.recipes = recipes;
     this.recipesChanged.next(this.recipes.slice());
   }
 
-getRecipes(){
+  getRecipes() {
     return this.recipes.slice();
-}
+  }
 
-getRecipe(id: number){
-    return this.recipes[id];
-}
+  getRecipe(index: number) {
+    return this.recipes[index];
+  }
 
-addIngredientsToShoppingList(ingredients:Ingredient[]){
-    this.shoppingListService.addIngredients(ingredients);
-}
+  addIngredientsToShoppingList(ingredients: Ingredient[]) {
+    this.slService.addIngredients(ingredients);
+  }
 
-addRecipe(recipe: Recipe){
+  addRecipe(recipe: Recipe) {
     this.recipes.push(recipe);
     this.recipesChanged.next(this.recipes.slice());
-}
+  }
 
-updateRecipe(index: number, newRecipe: Recipe){
-    this.recipes[index]=newRecipe;
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
     this.recipesChanged.next(this.recipes.slice());
-}
+  }
 
-deleteRecipe(index:number){
-    this.recipes.splice(index,1);
-    this.recipesChanged.next(this.recipes.slice())
-}
+  deleteRecipe(index: number) {
+    this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
+  }
 }
