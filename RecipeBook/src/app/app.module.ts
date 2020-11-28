@@ -23,7 +23,7 @@ import { AuthEffects } from './auth/store/auth.effects';
     StoreModule.forRoot(fromApp.appReducer),
     SharedModule,
     CoreModule,
-    EffectsModule.forRoot([AuthEffects])
+    EffectsModule
   ],
   providers: [
     

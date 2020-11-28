@@ -31,20 +31,40 @@ export class AuthEffects{
                 password: authData.payload.password,
                 returnSecureToken: true
               }
-            ).pipe(catchError(error=>{
-                return of()
-            }), 
-            map(resData=>{
-                const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
-                return of(new AuthActions.Login({
-                    email: resData.email, 
-                    userId: resData.localId, 
-                    token: resData.idToken, 
-                    tokenExpiration: expirationDate}))
-            }))
-        }),
-        
-    );
+            )
+            .pipe(
+              map(resData => {
+                const expirationDate = new Date(
+                  new Date().getTime() + +resData.expiresIn * 1000
+                );
+                return new AuthActions.Login({
+                  email: resData.email,
+                  userId: resData.localId,
+                  token: resData.idToken,
+                  tokenExpiration: expirationDate
+                });
+              }),
+              // catchError(errorRes => {
+              //   let errorMessage = 'An unknown error occurred!';
+              //   if (!errorRes.error || !errorRes.error.error) {
+              //     return of(new AuthActions.LoginFail(errorMessage));
+              //   }
+              //   switch (errorRes.error.error.message) {
+              //     case 'EMAIL_EXISTS':
+              //       errorMessage = 'This email exists already';
+              //       break;
+              //     case 'EMAIL_NOT_FOUND':
+              //       errorMessage = 'This email does not exist.';
+              //       break;
+              //     case 'INVALID_PASSWORD':
+              //       errorMessage = 'This password is not correct.';
+              //       break;
+              //   }
+              //   return of(new AuthActions.LoginFail(errorMessage));
+              // })
+              );
+            })
+          );
 
     constructor(private actions$: Actions, private http: HttpClient){}
 }
